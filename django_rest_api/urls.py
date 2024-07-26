@@ -17,14 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from drapi import views
+from rest_framework.routers import DefaultRouter
+router=DefaultRouter()
+router.register('aiquest',views.AiquestViewSet,basename='teacher')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
+    path('',include(router.urls)),
     # path('aiinfo/',views.aiquest_info),
     # path('aiinfo/<int:pk>/',views.aiquest_inst),
-    path('AiquestList/',views.AiquestList.as_view(),name='AiquestList'),
-    path('AiquestDetails/<int:pk>/',views.AiquestDetail.as_view(),name='AiquestDetails'),    
+    # path('AiquestList/',views.AiquestList.as_view(),name='AiquestList'),
+    # path('AiquestDetails/<int:pk>/',views.AiquestDetail.as_view(),name='AiquestDetails'),    
     # path('AiquestCreate/',views.AiquestCreate.as_view(),name='AiquestCreate'),
     # path('AiquestCreate/<int:pk>/',views.AiquestCreate.as_view(),name='AiquestCreate'),    
     # path('aicreate/',views.aiquest_create,name='aicreate'),

@@ -12,27 +12,34 @@
 # from rest_framework.views import APIView
 
 
-
-#-------5th approach-----
+#-------6th approach-----
+from rest_framework import viewsets
 from .models import Aiquest
 from .serializers import AiquestsSerializer
-from rest_framework import generics
-class AiquestList(generics.ListCreateAPIView):
-    queryset = Aiquest.objects.all()
-    serializer_class = AiquestsSerializer
+class AiquestViewSet(viewsets.ModelViewSet):
+    queryset=Aiquest.objects.all()
+    serializer_class=AiquestsSerializer
+
+#-------5th approach-----
+# from .models import Aiquest
+# from .serializers import AiquestsSerializer
+# from rest_framework import generics
+# class AiquestList(generics.ListCreateAPIView):
+#     queryset = Aiquest.objects.all()
+#     serializer_class = AiquestsSerializer
 
 
-class AiquestDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Aiquest.objects.all()
-    serializer_class = AiquestsSerializer
+# class AiquestDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Aiquest.objects.all()
+#     serializer_class = AiquestsSerializer
 
 
-
+#-------4th approach-----
 # from .models import Aiquest
 # from .serializers import AiquestsSerializer
 # from rest_framework.generics import GenericAPIView
 # from rest_framework.mixins import ListModelMixin,CreateModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin
-#-------4th approach-----
+
 # class AiquestList(GenericAPIView,ListModelMixin,CreateModelMixin):
 #     queryset=Aiquest.objects.all()
 #     serializer_class=AiquestsSerializer
@@ -55,7 +62,6 @@ class AiquestDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 # -------third approach-----
-
 # class AiquestCreate(APIView):
 #     def get(self,request,pk=None,format=None):
 #         id=pk
