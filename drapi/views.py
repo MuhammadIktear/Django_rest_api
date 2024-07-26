@@ -12,30 +12,46 @@
 # from rest_framework.views import APIView
 
 
+
+#-------5th approach-----
 from .models import Aiquest
 from .serializers import AiquestsSerializer
-from rest_framework.generics import GenericAPIView
-from rest_framework.mixins import ListModelMixin,CreateModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin
+from rest_framework import generics
+class AiquestList(generics.ListCreateAPIView):
+    queryset = Aiquest.objects.all()
+    serializer_class = AiquestsSerializer
+
+
+class AiquestDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Aiquest.objects.all()
+    serializer_class = AiquestsSerializer
+
+
+
+# from .models import Aiquest
+# from .serializers import AiquestsSerializer
+# from rest_framework.generics import GenericAPIView
+# from rest_framework.mixins import ListModelMixin,CreateModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin
 #-------4th approach-----
-class AiquestList(GenericAPIView,ListModelMixin,CreateModelMixin):
-    queryset=Aiquest.objects.all()
-    serializer_class=AiquestsSerializer
-    def get(self,request,*args, **kwargs):
-        return self.list(request,*args, **kwargs)
-    def post(self,request,*args, **kwargs):
-        return self.create(request,*args, **kwargs)    
+# class AiquestList(GenericAPIView,ListModelMixin,CreateModelMixin):
+#     queryset=Aiquest.objects.all()
+#     serializer_class=AiquestsSerializer
+#     def get(self,request,*args, **kwargs):
+#         return self.list(request,*args, **kwargs)
+#     def post(self,request,*args, **kwargs):
+#         return self.create(request,*args, **kwargs)    
     
-class AiquestDetails(GenericAPIView,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin):
-    queryset=Aiquest.objects.all()
-    serializer_class=AiquestsSerializer
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+# class AiquestDetails(GenericAPIView,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin):
+#     queryset=Aiquest.objects.all()
+#     serializer_class=AiquestsSerializer
+#     def get(self, request, *args, **kwargs):
+#         return self.retrieve(request, *args, **kwargs)
 
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
+#     def put(self, request, *args, **kwargs):
+#         return self.update(request, *args, **kwargs)
 
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
+#     def delete(self, request, *args, **kwargs):
+#         return self.destroy(request, *args, **kwargs)
 
 
 # -------third approach-----
