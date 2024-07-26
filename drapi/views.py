@@ -1,65 +1,92 @@
-from django.shortcuts import render
+# from django.shortcuts import render
+# from .models import Aiquest
+# from .serializers import AiquestsSerializer
+# from rest_framework.renderers import JSONRenderer
+# from django.http import HttpResponse
+# from django.views.decorators.csrf import csrf_exempt
+# import io
+# from rest_framework.parsers import JSONParser
+# from rest_framework.decorators import api_view
+# from rest_framework.response import Response
+# from rest_framework import status
+# from rest_framework.views import APIView
+
+
 from .models import Aiquest
 from .serializers import AiquestsSerializer
-from rest_framework.renderers import JSONRenderer
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-import io
-from rest_framework.parsers import JSONParser
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import ListModelMixin,CreateModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin
+#-------4th approach-----
+class AiquestList(GenericAPIView,ListModelMixin,CreateModelMixin):
+    queryset=Aiquest.objects.all()
+    serializer_class=AiquestsSerializer
+    def get(self,request,*args, **kwargs):
+        return self.list(request,*args, **kwargs)
+    def post(self,request,*args, **kwargs):
+        return self.create(request,*args, **kwargs)    
+    
+class AiquestDetails(GenericAPIView,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin):
+    queryset=Aiquest.objects.all()
+    serializer_class=AiquestsSerializer
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
 
 # -------third approach-----
 
-class AiquestCreate(APIView):
-    def get(self,request,pk=None,format=None):
-        id=pk
-        #for models instance
-        if id is not None:
-            try:
-                ai=Aiquest.objects.get(id=id) #colplex data
-                serializer=AiquestsSerializer(ai)#python datatype/dict convert
-                return Response(serializer.data)
-            except Aiquest.DoesNotExist:
-                return Response('No data found', status=status.HTTP_404_NOT_FOUND)
-        #QuerySet(for all)
-        ai=Aiquest.objects.all()#colplex data
-        serializer=AiquestsSerializer(ai,many=True)#python datatype/dict convert
-        return Response(serializer.data)
+# class AiquestCreate(APIView):
+#     def get(self,request,pk=None,format=None):
+#         id=pk
+#         #for models instance
+#         if id is not None:
+#             try:
+#                 ai=Aiquest.objects.get(id=id) #colplex data
+#                 serializer=AiquestsSerializer(ai)#python datatype/dict convert
+#                 return Response(serializer.data)
+#             except Aiquest.DoesNotExist:
+#                 return Response('No data found', status=status.HTTP_404_NOT_FOUND)
+#         #QuerySet(for all)
+#         ai=Aiquest.objects.all()#colplex data
+#         serializer=AiquestsSerializer(ai,many=True)#python datatype/dict convert
+#         return Response(serializer.data)
     
-    def post(self,request,format=None):
-        serializer=AiquestsSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            res={'msg':'Successfully saved data'}
-            return Response(res)
-        return Response(serializer.errors)
+#     def post(self,request,format=None):
+#         serializer=AiquestsSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             res={'msg':'Successfully saved data'}
+#             return Response(res)
+#         return Response(serializer.errors)
     
-    def put(self,request,pk,format=None):
-        id=pk
-        ai=Aiquest.objects.get(pk=id)
-        serializer=AiquestsSerializer(ai,data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'msg':'Full data updated'})
-        return Response(serializer.errors)
+#     def put(self,request,pk,format=None):
+#         id=pk
+#         ai=Aiquest.objects.get(pk=id)
+#         serializer=AiquestsSerializer(ai,data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response({'msg':'Full data updated'})
+#         return Response(serializer.errors)
 
-    def patch(self,request,pk,format=None):
-        id=pk
-        ai=Aiquest.objects.get(pk=id)
-        serializer=AiquestsSerializer(ai,data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'msg':'Partial data updated'})
-        return Response(serializer.errors)    
+#     def patch(self,request,pk,format=None):
+#         id=pk
+#         ai=Aiquest.objects.get(pk=id)
+#         serializer=AiquestsSerializer(ai,data=request.data, partial=True)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response({'msg':'Partial data updated'})
+#         return Response(serializer.errors)    
         
-    def delete(self,request,pk,format=None):
-        id=pk
-        ai=Aiquest.objects.get(pk=id)
-        ai.delete()    
-        return Response({'msg':'Successfully deleted'})
+#     def delete(self,request,pk,format=None):
+#         id=pk
+#         ai=Aiquest.objects.get(pk=id)
+#         ai.delete()    
+#         return Response({'msg':'Successfully deleted'})
 
 
 
